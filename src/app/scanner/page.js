@@ -42,6 +42,8 @@ const triggerVibration = () => {
 // ── Debounce cooldown (ms) ────────────────────────────────
 const SCAN_COOLDOWN = 2500;
 
+const normalizeBarcode = (value) => String(value || '').trim();
+
 export default function ScannerPage() {
     const [mode, setMode] = useState('camera');
     const [barcode, setBarcode] = useState('');
@@ -132,7 +134,8 @@ export default function ScannerPage() {
 
     // ── POST /api/scan ────────────────────────────────────
     const processScan = useCallback(async (code) => {
-        if (!code || code.length < 4) {
+        const normalizedCode = normalizeBarcode(code);
+        if (!normalizedCode || normalizedCode.length < 4) {
             toast.error('Invalid barcode (too short)');
             return;
         }
@@ -141,7 +144,7 @@ export default function ScannerPage() {
         setLoading(true);
 
         try {
-            const { data } = await api.post('/scan', { barcode: code });
+            const { data } = await api.post('/scan', { barcode: normalizedCode });
             const p = data.data.product;
 
             setProduct(p);
@@ -150,7 +153,7 @@ export default function ScannerPage() {
             setScanHistory(prev => [
                 {
                     id: Date.now(),
-                    barcode: code,
+                    barcode: normalizedCode,
                     productName: p.name,
                     stockQty: p.stockQty,
                     isNew: data.data.isNew,
@@ -588,7 +591,7 @@ export default function ScannerPage() {
                         <AnimatePresence>
                             {showHistory && (
                                 <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="overflow-hidden">
-                                    <div className="px-4 pb-4 max-h-[320px] overflow-y-auto space-y-2">
+                                    <div className="px-4 pb-4 max-h-80 overflow-y-auto space-y-2">
                                         {scanHistory.length === 0 ? (
                                             <p className="text-xs text-center py-6" style={{ color: 'var(--text-muted)' }}>
                                                 No scans yet — start scanning!
@@ -604,7 +607,7 @@ export default function ScannerPage() {
                                                     style={{ background: 'var(--bg-tertiary)' }}
                                                 >
                                                     <div className="flex items-center gap-3 min-w-0">
-                                                        <div className={`w-2 h-2 rounded-full flex-shrink-0 ${item.isNew ? 'bg-blue-500' : 'bg-emerald-500'}`} />
+                                                        <div className={`w-2 h-2 rounded-full shrink-0 ${item.isNew ? 'bg-blue-500' : 'bg-emerald-500'}`} />
                                                         <div className="min-w-0">
                                                             <p className="text-sm font-medium truncate" style={{ color: 'var(--text-primary)' }}>
                                                                 {item.productName}
@@ -614,7 +617,7 @@ export default function ScannerPage() {
                                                             </p>
                                                         </div>
                                                     </div>
-                                                    <div className="text-right flex-shrink-0 ml-3">
+                                                    <div className="text-right shrink-0 ml-3">
                                                         <p className="text-sm font-bold" style={{ color: 'var(--accent)' }}>
                                                             Qty: {item.stockQty}
                                                         </p>

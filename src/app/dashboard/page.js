@@ -61,7 +61,7 @@ export default function DashboardPage() {
     const warehouseName = useAuthStore((state) => state.warehouseName);
     const headerPrefix = warehouseName ? `Warehouse: ${warehouseName}` : 'Warehouse: Unassigned';
 
-    const { data: dashboard, isLoading: loadingDash } = useQuery({
+    const { data: dashboard, isLoading: loadingDash, isError: dashboardError } = useQuery({
         queryKey: ['dashboard'],
         queryFn: () => api.get('/analytics/dashboard').then((r) => r.data.data),
     });
@@ -69,6 +69,7 @@ export default function DashboardPage() {
     const { data: salesData } = useQuery({
         queryKey: ['sales-chart'],
         queryFn: () => api.get('/analytics/sales?days=30').then((r) => r.data.data),
+        retry: false,
     });
 
     if (loadingDash) {
@@ -80,6 +81,19 @@ export default function DashboardPage() {
                 </div>
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                     <ChartSkeleton /><ChartSkeleton />
+                </div>
+            </DashboardLayout>
+        );
+    }
+
+    if (dashboardError) {
+        return (
+            <DashboardLayout>
+                <PageHeader title="Dashboard" subtitle={`${headerPrefix} · Unable to load statistics`} />
+                <div className="card p-5">
+                    <p className="text-sm" style={{ color: 'var(--text-muted)' }}>
+                        Dashboard metrics could not be fetched. Please refresh the page or sign in again.
+                    </p>
                 </div>
             </DashboardLayout>
         );
