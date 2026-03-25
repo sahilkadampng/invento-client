@@ -12,11 +12,11 @@ export default function Pagination({ pagination, onPageChange }) {
   for (let i = start; i <= end; i++) pages.push(i);
 
   return (
-    <div className="flex items-center justify-between mt-4 px-1">
-      <p className="text-sm" style={{ color: 'var(--text-muted)' }}>
+    <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between mt-4 px-1">
+      <p className="text-xs sm:text-sm" style={{ color: 'var(--text-muted)' }}>
         Showing page {page} of {totalPages} ({total} items)
       </p>
-      <div className="flex items-center gap-1">
+      <div className="flex flex-wrap items-center gap-1">
         <button
           onClick={() => hasPrev && onPageChange(page - 1)}
           disabled={!hasPrev}
@@ -28,7 +28,7 @@ export default function Pagination({ pagination, onPageChange }) {
           <button
             key={p}
             onClick={() => onPageChange(p)}
-            className={`btn btn-sm min-w-[36px] justify-center ${p === page ? 'btn-primary' : 'btn-ghost'}`}
+            className={`btn btn-sm min-w-9 justify-center ${p === page ? 'btn-primary' : 'btn-ghost'}`}
           >
             {p}
           </button>

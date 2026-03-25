@@ -22,15 +22,15 @@ export default function Modal({ isOpen, onClose, title, children, size = 'md' })
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
             transition={{ type: 'spring', damping: 25 }}
-            className={`fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[95%] ${sizes[size]} z-50 card shadow-2xl max-h-[85vh] flex flex-col`}
+            className={`fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[96%] sm:w-[95%] ${sizes[size]} z-50 card shadow-2xl max-h-[90vh] sm:max-h-[85vh] flex flex-col`}
           >
-            <div className="flex items-center justify-between p-5 border-b" style={{ borderColor: 'var(--border-color)' }}>
+            <div className="flex items-center justify-between p-3 sm:p-5 border-b" style={{ borderColor: 'var(--border-color)' }}>
               <h2 className="text-lg font-semibold" style={{ color: 'var(--text-primary)' }}>{title}</h2>
-              <button onClick={onClose} className="p-1.5 rounded-lg transition-colors hover:bg-[var(--bg-tertiary)]" style={{ color: 'var(--text-muted)' }}>
+              <button onClick={onClose} className="p-1.5 rounded-lg transition-colors hover:bg-(--bg-tertiary)" style={{ color: 'var(--text-muted)' }}>
                 <X className="w-5 h-5" />
               </button>
             </div>
-            <div className="p-5 overflow-y-auto flex-1">
+            <div className="p-3 sm:p-5 overflow-y-auto flex-1">
               {children}
             </div>
           </motion.div>

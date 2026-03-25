@@ -76,10 +76,10 @@ export default function DashboardLayout({ children }) {
       <Sidebar />
       <Navbar />
       <main
-        className="pt-16 transition-all duration-300 min-h-screen"
-        style={{ marginLeft: isCollapsed ? '72px' : '260px' }}
+        className="dashboard-main pt-16 transition-all duration-300 min-h-screen"
+        style={{ '--sidebar-offset': isCollapsed ? '72px' : '260px' }}
       >
-        <div className="p-4 lg:p-6">
+        <div className="dashboard-content p-4 lg:p-6">
           {children}
         </div>
       </main>

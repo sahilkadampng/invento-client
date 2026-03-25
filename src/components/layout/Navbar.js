@@ -63,9 +63,9 @@ export default function Navbar() {
 
   return (
     <header
-      className="fixed top-0 right-0 h-16 z-30 flex items-center justify-between px-4 lg:px-6 transition-all duration-300"
+      className="dashboard-navbar fixed top-0 right-0 h-16 z-30 flex items-center justify-between px-3 sm:px-4 lg:px-6 transition-all duration-300"
       style={{
-        left: isCollapsed ? '72px' : '260px',
+        '--sidebar-offset': isCollapsed ? '72px' : '260px',
         background: 'var(--bg-secondary)',
         borderBottom: '1px solid var(--border-color)',
       }}
@@ -95,7 +95,7 @@ export default function Navbar() {
                 initial={{ opacity: 0, y: -10, scale: 0.95 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: -10, scale: 0.95 }}
-                className="absolute right-0 top-12 w-96 card p-3 shadow-2xl gap-2"
+                className="absolute right-0 top-12 w-[min(92vw,24rem)] sm:w-96 card p-3 shadow-2xl gap-2"
               >
                 <div className="relative">
                   {/* <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4" style={{ color: 'var(--text-muted)' }} /> */}
@@ -123,9 +123,9 @@ export default function Navbar() {
                           <div
                             key={p._id}
                             onClick={() => { router.push(`/products/${p._id}`); setShowSearch(false); }}
-                            className="flex items-center gap-3 p-2 rounded-lg cursor-pointer hover:bg-[var(--bg-tertiary)] transition"
+                            className="flex items-center gap-3 p-2 rounded-lg cursor-pointer hover:bg-(--bg-tertiary) transition"
                           >
-                            <div className="w-8 h-8 rounded-lg bg-[var(--accent-light)] flex items-center justify-center text-xs font-bold" style={{ color: 'var(--accent)' }}>
+                            <div className="w-8 h-8 rounded-lg bg-(--accent-light) flex items-center justify-center text-xs font-bold" style={{ color: 'var(--accent)' }}>
                               {p.name?.charAt(0)}
                             </div>
                             <div className="flex-1 min-w-0">
@@ -197,7 +197,7 @@ export default function Navbar() {
                 <div className="p-1">
                   <button
                     onClick={() => { router.push('/settings'); setShowDropdown(false); }}
-                    className="flex items-center gap-2 w-full px-3 py-2 rounded-lg text-sm transition-colors hover:bg-[var(--bg-tertiary)]"
+                    className="flex items-center gap-2 w-full px-3 py-2 rounded-lg text-sm transition-colors hover:bg-(--bg-tertiary)"
                     style={{ color: 'var(--text-secondary)' }}
                   >
                     <Settings className="w-4 h-4" /> Settings

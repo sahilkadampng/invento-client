@@ -57,7 +57,7 @@ export default function Sidebar() {
 
       <aside
         className={`fixed top-0 left-0 h-full z-50 transition-all duration-100 flex flex-col
-          ${isCollapsed ? 'w-[72px]' : 'w-[260px]'}
+          ${isCollapsed ? 'w-65 lg:w-18' : 'w-65'}
           ${isMobileOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
         `}
         style={{ background: 'var(--bg-secondary)', borderRight: '1px solid var(--border-color)' }}
@@ -101,7 +101,7 @@ export default function Sidebar() {
                   }}
                   title={isCollapsed ? item.label : ''}
                 >
-                  <Icon className={`w-5 h-5 flex-shrink-0 ${isActive ? '' : 'group-hover:text-black'}`} />
+                  <Icon className={`w-5 h-5 shrink-0 ${isActive ? '' : 'group-hover:text-black'}`} />
                   {!isCollapsed && (
                     <span className="text-sm font-medium truncate">{item.label}</span>
                   )}

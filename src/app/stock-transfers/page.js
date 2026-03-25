@@ -74,7 +74,7 @@ export default function StockTransfersPage() {
   return (
     <DashboardLayout>
       <PageHeader title="Stock Transfers" subtitle="Inter-warehouse stock transfer management">
-        <select value={statusFilter} onChange={(e) => { setStatusFilter(e.target.value); setPage(1); }} className="form-input w-40">
+        <select value={statusFilter} onChange={(e) => { setStatusFilter(e.target.value); setPage(1); }} className="form-input w-full sm:w-40">
           <option value="">All Status</option>
           <option value="draft">Draft</option>
           <option value="in_transit">In Transit</option>
@@ -100,7 +100,7 @@ export default function StockTransfersPage() {
       </div>
 
       {/* Pipeline */}
-      <div className="grid grid-cols-4 gap-3 mb-6">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
         {[
           { label: 'Draft', count: stats?.draft || 0, color: '#94a3b8' },
           { label: 'In Transit', count: stats?.inTransit || 0, color: '#f59e0b' },
@@ -177,19 +177,19 @@ export default function StockTransfersPage() {
               <button type="button" onClick={addItem} className="btn btn-ghost btn-sm"><Plus className="w-3 h-3" /> Add</button>
             </div>
             {form.items.map((item, i) => (
-              <div key={i} className="grid grid-cols-12 gap-2 mb-2">
-                <select value={item.product} onChange={(e) => updateItem(i, 'product', e.target.value)} className="form-input col-span-8" required>
+              <div key={i} className="grid grid-cols-1 sm:grid-cols-12 gap-2 mb-2">
+                <select value={item.product} onChange={(e) => updateItem(i, 'product', e.target.value)} className="form-input sm:col-span-8" required>
                   <option value="">Select product</option>
                   {products?.map((p) => <option key={p._id} value={p._id}>{p.name} (Stock: {p.stockQty})</option>)}
                 </select>
-                <input type="number" value={item.quantity} onChange={(e) => updateItem(i, 'quantity', parseInt(e.target.value) || 1)} className="form-input col-span-3" min="1" />
-                <button type="button" onClick={() => removeItem(i)} className="btn btn-ghost btn-sm col-span-1 text-red-500"><Trash2 className="w-3 h-3" /></button>
+                <input type="number" value={item.quantity} onChange={(e) => updateItem(i, 'quantity', parseInt(e.target.value) || 1)} className="form-input sm:col-span-3" min="1" />
+                <button type="button" onClick={() => removeItem(i)} className="btn btn-ghost btn-sm sm:col-span-1 text-red-500 justify-center"><Trash2 className="w-3 h-3" /></button>
               </div>
             ))}
           </div>
 
           <div><label className="form-label">Notes</label><textarea value={form.notes} onChange={(e) => setForm({ ...form, notes: e.target.value })} className="form-input" rows={2} /></div>
-          <div className="flex justify-end gap-2"><button type="button" onClick={() => setShowModal(false)} className="btn btn-secondary">Cancel</button><button type="submit" className="btn btn-primary">Create Transfer</button></div>
+          <div className="flex flex-col-reverse sm:flex-row justify-end gap-2"><button type="button" onClick={() => setShowModal(false)} className="btn btn-secondary w-full sm:w-auto">Cancel</button><button type="submit" className="btn btn-primary w-full sm:w-auto">Create Transfer</button></div>
         </form>
       </Modal>
     </DashboardLayout>

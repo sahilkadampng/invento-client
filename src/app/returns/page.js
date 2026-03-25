@@ -90,9 +90,9 @@ export default function ReturnsPage() {
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-1 mb-6 p-1 rounded-sm w-fit" style={{ background: 'var(--bg-tertiary)' }}>
+      <div className="flex flex-wrap gap-1 mb-6 p-1 rounded-sm w-full sm:w-fit" style={{ background: 'var(--bg-tertiary)' }}>
         {[{ key: 'all', label: 'All Returns' }, { key: 'pending', label: 'Pending' }, { key: 'damaged', label: 'Damaged/Write-offs' }].map((t) => (
-          <button key={t.key} onClick={() => { setTab(t.key); setPage(1); }} className={`px-4 py-2 rounded-sm text-sm font-medium transition-all ${tab === t.key ? 'bg-white shadow-sm text-[var(--text-primary)]' : 'text-[var(--text-muted)]'}`}>
+          <button key={t.key} onClick={() => { setTab(t.key); setPage(1); }} className={`px-4 py-2 rounded-sm text-sm font-medium transition-all flex-1 sm:flex-none ${tab === t.key ? 'bg-white shadow-sm text-(--text-primary)' : 'text-(--text-muted)'}`}>
             {t.label}
           </button>
         ))}
@@ -162,26 +162,26 @@ export default function ReturnsPage() {
               <button type="button" onClick={addItem} className="btn btn-ghost btn-sm"><Plus className="w-3 h-3" /> Add Item</button>
             </div>
             {form.items.map((item, i) => (
-              <div key={i} className="grid grid-cols-12 gap-2 mb-2">
-                <select value={item.product} onChange={(e) => updateItem(i, 'product', e.target.value)} className="form-input col-span-4" required>
+              <div key={i} className="grid grid-cols-1 sm:grid-cols-12 gap-2 mb-2">
+                <select value={item.product} onChange={(e) => updateItem(i, 'product', e.target.value)} className="form-input sm:col-span-4" required>
                   <option value="">Select product</option>
                   {products?.map((p) => <option key={p._id} value={p._id}>{p.name}</option>)}
                 </select>
-                <input type="number" value={item.quantity} onChange={(e) => updateItem(i, 'quantity', parseInt(e.target.value) || 1)} className="form-input col-span-2" min="1" />
-                <select value={item.condition} onChange={(e) => updateItem(i, 'condition', e.target.value)} className="form-input col-span-2">
+                <input type="number" value={item.quantity} onChange={(e) => updateItem(i, 'quantity', parseInt(e.target.value) || 1)} className="form-input sm:col-span-2" min="1" />
+                <select value={item.condition} onChange={(e) => updateItem(i, 'condition', e.target.value)} className="form-input sm:col-span-2">
                   <option value="good">Good</option>
                   <option value="damaged">Damaged</option>
                   <option value="expired">Expired</option>
                   <option value="unsellable">Unsellable</option>
                 </select>
-                <input value={item.reason} onChange={(e) => updateItem(i, 'reason', e.target.value)} className="form-input col-span-3" placeholder="Reason" />
-                <button type="button" onClick={() => removeItem(i)} className="btn btn-ghost btn-sm col-span-1 text-red-500"><Trash2 className="w-3 h-3" /></button>
+                <input value={item.reason} onChange={(e) => updateItem(i, 'reason', e.target.value)} className="form-input sm:col-span-3" placeholder="Reason" />
+                <button type="button" onClick={() => removeItem(i)} className="btn btn-ghost btn-sm sm:col-span-1 text-red-500 justify-center"><Trash2 className="w-3 h-3" /></button>
               </div>
             ))}
           </div>
 
           <div><label className="form-label">Notes</label><textarea value={form.notes} onChange={(e) => setForm({ ...form, notes: e.target.value })} className="form-input" rows={2} /></div>
-          <div className="flex justify-end gap-2"><button type="button" onClick={() => setShowModal(false)} className="btn btn-secondary">Cancel</button><button type="submit" className="btn btn-primary">Create Return</button></div>
+          <div className="flex flex-col-reverse sm:flex-row justify-end gap-2"><button type="button" onClick={() => setShowModal(false)} className="btn btn-secondary w-full sm:w-auto">Cancel</button><button type="submit" className="btn btn-primary w-full sm:w-auto">Create Return</button></div>
         </form>
       </Modal>
     </DashboardLayout>

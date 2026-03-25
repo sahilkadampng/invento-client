@@ -70,9 +70,9 @@ export default function PurchaseOrdersPage() {
   return (
     <DashboardLayout>
       <PageHeader title="Purchase Orders" subtitle="Manage supplier orders">
-        <div className="flex gap-1 p-1 rounded-lg" style={{ background: 'var(--bg-tertiary)' }}>
+        <div className="flex flex-wrap gap-1 p-1 rounded-lg w-full sm:w-auto" style={{ background: 'var(--bg-tertiary)' }}>
           {['', 'pending', 'approved', 'received', 'cancelled'].map((s) => (
-            <button key={s} onClick={() => { setStatus(s); setPage(1); }} className={`px-3 py-1.5 rounded-md text-xs font-medium transition ${status === s ? 'bg-white shadow-sm text-[var(--text-primary)]' : 'text-[var(--text-muted)]'}`}>
+            <button key={s} onClick={() => { setStatus(s); setPage(1); }} className={`px-3 py-1.5 rounded-md text-xs font-medium transition flex-1 sm:flex-none ${status === s ? 'bg-white shadow-sm text-(--text-primary)' : 'text-(--text-muted)'}`}>
               {s || 'All'}
             </button>
           ))}
@@ -109,18 +109,20 @@ export default function PurchaseOrdersPage() {
       <Modal isOpen={!!viewOrder} onClose={() => setViewOrder(null)} title={`Purchase Order ${viewOrder?.poNumber || ''}`} size="lg">
         {viewOrder && (
           <div className="space-y-4">
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div><span className="text-xs" style={{ color: 'var(--text-muted)' }}>Supplier</span><p className="font-medium" style={{ color: 'var(--text-primary)' }}>{viewOrder.supplier?.name}</p></div>
               <div><span className="text-xs" style={{ color: 'var(--text-muted)' }}>Status</span><p><span className={`badge ${statusColors[viewOrder.status]}`}>{viewOrder.status}</span></p></div>
               <div><span className="text-xs" style={{ color: 'var(--text-muted)' }}>Total Amount</span><p className="text-lg font-bold" style={{ color: 'var(--text-primary)' }}>₹{viewOrder.totalAmount?.toLocaleString()}</p></div>
               <div><span className="text-xs" style={{ color: 'var(--text-muted)' }}>Created By</span><p style={{ color: 'var(--text-secondary)' }}>{viewOrder.createdBy?.name}</p></div>
             </div>
-            <table className="data-table mt-4"><thead><tr><th>Product</th><th>Qty</th><th>Unit Price</th><th>Tax %</th><th>Total</th></tr></thead>
-              <tbody>{viewOrder.items?.map((item, i) => (
-                <tr key={i}><td>{item.product?.name || '-'}</td><td>{item.quantity}</td><td>₹{item.unitPrice}</td><td>{item.tax}%</td><td className="font-semibold">₹{item.total?.toFixed(2)}</td></tr>
-              ))}</tbody>
-            </table>
-            <div className="flex gap-2 pt-4">
+            <div className="overflow-x-auto">
+              <table className="data-table mt-4"><thead><tr><th>Product</th><th>Qty</th><th>Unit Price</th><th>Tax %</th><th>Total</th></tr></thead>
+                <tbody>{viewOrder.items?.map((item, i) => (
+                  <tr key={i}><td>{item.product?.name || '-'}</td><td>{item.quantity}</td><td>₹{item.unitPrice}</td><td>{item.tax}%</td><td className="font-semibold">₹{item.total?.toFixed(2)}</td></tr>
+                ))}</tbody>
+              </table>
+            </div>
+            <div className="flex flex-wrap gap-2 pt-4">
               {viewOrder.status === 'pending' && <><button onClick={() => approveMutation.mutate(viewOrder._id)} className="btn btn-success"><Check className="w-4 h-4" /> Approve</button><button onClick={() => cancelMutation.mutate(viewOrder._id)} className="btn btn-danger"><X className="w-4 h-4" /> Cancel</button></>}
               {viewOrder.status === 'approved' && <button onClick={() => receiveMutation.mutate(viewOrder._id)} className="btn btn-primary"><Truck className="w-4 h-4" /> Mark Received</button>}
             </div>
@@ -131,7 +133,7 @@ export default function PurchaseOrdersPage() {
       {/* Create PO Modal */}
       <Modal isOpen={showModal} onClose={() => setShowModal(false)} title="Create Purchase Order" size="xl">
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div><label className="form-label">Supplier *</label>
               <select value={form.supplier} onChange={(e) => setForm({ ...form, supplier: e.target.value })} className="form-input" required>
                 <option value="">Select supplier</option>{suppliers?.map((s) => <option key={s._id} value={s._id}>{s.name}</option>)}
@@ -141,7 +143,7 @@ export default function PurchaseOrdersPage() {
           </div>
           <div><label className="form-label">Items</label>
             {items.map((item, i) => (
-              <div key={i} className="grid grid-cols-5 gap-2 mb-2">
+              <div key={i} className="grid grid-cols-1 md:grid-cols-5 gap-2 mb-2">
                 <select value={item.product} onChange={(e) => updateItem(i, 'product', e.target.value)} className="form-input" required>
                   <option value="">Product</option>{products?.map((p) => <option key={p._id} value={p._id}>{p.name}</option>)}
                 </select>
@@ -154,7 +156,7 @@ export default function PurchaseOrdersPage() {
             <button type="button" onClick={addItem} className="btn btn-ghost btn-sm"><Plus className="w-4 h-4" /> Add Item</button>
           </div>
           <div><label className="form-label">Notes</label><textarea value={form.notes} onChange={(e) => setForm({ ...form, notes: e.target.value })} className="form-input" rows={2} /></div>
-          <div className="flex justify-end gap-2"><button type="button" onClick={() => setShowModal(false)} className="btn btn-secondary">Cancel</button><button type="submit" className="btn btn-primary">Create PO</button></div>
+          <div className="flex flex-col-reverse sm:flex-row justify-end gap-2"><button type="button" onClick={() => setShowModal(false)} className="btn btn-secondary w-full sm:w-auto">Cancel</button><button type="submit" className="btn btn-primary w-full sm:w-auto">Create PO</button></div>
         </form>
       </Modal>
     </DashboardLayout>

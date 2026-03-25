@@ -94,16 +94,18 @@ export default function InvoicesPage() {
       <Modal isOpen={!!viewInvoice} onClose={() => setViewInvoice(null)} title={`Invoice ${viewInvoice?.invoiceNumber || ''}`} size="lg">
         {viewInvoice && (
           <div className="space-y-4">
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div><span className="text-xs" style={{ color: 'var(--text-muted)' }}>Customer</span><p className="font-medium">{viewInvoice.customer?.name}</p></div>
               <div><span className="text-xs" style={{ color: 'var(--text-muted)' }}>Total</span><p className="text-xl font-bold" style={{ color: 'var(--accent)' }}>₹{viewInvoice.totalAmount?.toLocaleString()}</p></div>
             </div>
-            <table className="data-table"><thead><tr><th>Item</th><th>Qty</th><th>Price</th><th>Tax</th><th>Total</th></tr></thead>
-              <tbody>{viewInvoice.items?.map((item, i) => (
-                <tr key={i}><td>{item.name || 'Product'}</td><td>{item.quantity}</td><td>₹{item.unitPrice}</td><td>{item.tax}%</td><td className="font-semibold">₹{item.total?.toFixed(2)}</td></tr>
-              ))}</tbody>
-            </table>
-            <div className="flex gap-2 border-t pt-4" style={{ borderColor: 'var(--border-color)' }}>
+            <div className="overflow-x-auto">
+              <table className="data-table"><thead><tr><th>Item</th><th>Qty</th><th>Price</th><th>Tax</th><th>Total</th></tr></thead>
+                <tbody>{viewInvoice.items?.map((item, i) => (
+                  <tr key={i}><td>{item.name || 'Product'}</td><td>{item.quantity}</td><td>₹{item.unitPrice}</td><td>{item.tax}%</td><td className="font-semibold">₹{item.total?.toFixed(2)}</td></tr>
+                ))}</tbody>
+              </table>
+            </div>
+            <div className="flex flex-wrap gap-2 border-t pt-4" style={{ borderColor: 'var(--border-color)' }}>
               <button onClick={() => downloadPdf(viewInvoice._id)} className="btn btn-primary"><Download className="w-4 h-4" /> Download PDF</button>
             </div>
           </div>
@@ -113,7 +115,7 @@ export default function InvoicesPage() {
       {/* Create Invoice */}
       <Modal isOpen={showModal} onClose={() => setShowModal(false)} title="Create Invoice" size="xl">
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div><label className="form-label">Customer Name *</label><input value={customer.name} onChange={(e) => setCustomer({ ...customer, name: e.target.value })} className="form-input" required /></div>
             <div><label className="form-label">Email</label><input type="email" value={customer.email} onChange={(e) => setCustomer({ ...customer, email: e.target.value })} className="form-input" /></div>
             <div><label className="form-label">Phone</label><input value={customer.phone} onChange={(e) => setCustomer({ ...customer, phone: e.target.value })} className="form-input" /></div>
@@ -125,8 +127,8 @@ export default function InvoicesPage() {
           </div>
           <div><label className="form-label">Items</label>
             {items.map((item, i) => (
-              <div key={i} className="grid grid-cols-6 gap-2 mb-2">
-                <select value={item.product} onChange={(e) => updateItem(i, 'product', e.target.value)} className="form-input col-span-2" required>
+              <div key={i} className="grid grid-cols-1 md:grid-cols-6 gap-2 mb-2">
+                <select value={item.product} onChange={(e) => updateItem(i, 'product', e.target.value)} className="form-input md:col-span-2" required>
                   <option value="">Product</option>{products?.map((p) => <option key={p._id} value={p._id}>{p.name} (₹{p.sellingPrice})</option>)}
                 </select>
                 <input type="number" placeholder="Qty" value={item.quantity} onChange={(e) => updateItem(i, 'quantity', e.target.value)} className="form-input" min="1" required />
@@ -137,7 +139,7 @@ export default function InvoicesPage() {
             ))}
             <button type="button" onClick={addItem} className="btn btn-ghost btn-sm"><Plus className="w-4 h-4" /> Add Item</button>
           </div>
-          <div className="flex justify-end gap-2"><button type="button" onClick={() => setShowModal(false)} className="btn btn-secondary">Cancel</button><button type="submit" className="btn btn-primary">Create Invoice</button></div>
+          <div className="flex flex-col-reverse sm:flex-row justify-end gap-2"><button type="button" onClick={() => setShowModal(false)} className="btn btn-secondary w-full sm:w-auto">Cancel</button><button type="submit" className="btn btn-primary w-full sm:w-auto">Create Invoice</button></div>
         </form>
       </Modal>
     </DashboardLayout>

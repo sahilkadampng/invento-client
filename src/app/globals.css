@@ -49,6 +49,25 @@ body {
     -moz-osx-font-smoothing: grayscale;
 }
 
+/* ─── App Shell Responsiveness ─────────────────────────── */
+.dashboard-navbar {
+    left: 0;
+}
+
+.dashboard-main {
+    margin-left: 0;
+}
+
+@media (min-width: 1024px) {
+    .dashboard-navbar {
+        left: var(--sidebar-offset, 260px);
+    }
+
+    .dashboard-main {
+        margin-left: var(--sidebar-offset, 260px);
+    }
+}
+
 /* ─── Custom Scrollbar ──────────────────────────────────── */
 ::-webkit-scrollbar {
     width: 6px;
@@ -382,6 +401,49 @@ body {
     opacity: 0.5;
     cursor: not-allowed;
     transform: none;
+}
+
+@media (max-width: 768px) {
+    .dashboard-content {
+        padding: 1rem;
+    }
+
+    .data-table {
+        min-width: 640px;
+    }
+
+    .data-table th,
+    .data-table td {
+        padding: 10px 12px;
+    }
+
+    .btn {
+        min-height: 40px;
+        padding: 8px 14px;
+    }
+
+    .btn-lg {
+        padding: 10px 16px;
+        font-size: 0.9375rem;
+    }
+
+    .form-input {
+        min-height: 40px;
+    }
+}
+
+@media (max-width: 480px) {
+    .card {
+        border-radius: 12px;
+    }
+
+    .dashboard-content {
+        padding: 0.75rem;
+    }
+
+    .form-label {
+        font-size: 0.75rem;
+    }
 }
 
 /* ─── Barcode Scanner Styles ───────────────────────────── */
